@@ -1,0 +1,22 @@
+{
+  "name": "functions-datastore",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tnguyen14/functions-datastore.git"
+  },
+  "author": "Tri Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tnguyen14/functions-datastore/issues"
+  },
+  "homepage": "https://github.com/tnguyen14/functions-datastore#readme",
+  "dependencies": {
+    "@google-cloud/datastore": "^1.1.0"
+  }
+}
