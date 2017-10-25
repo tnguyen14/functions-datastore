@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/tnguyen14/functions-datastore#readme",
   "dependencies": {
-    "@google-cloud/datastore": "^1.1.0"
+    "@google-cloud/datastore": "^1.1.0",
+    "jsonwebtoken": "^8.1.0",
+    "jwks-rsa": "^1.2.1"
   }
 }
