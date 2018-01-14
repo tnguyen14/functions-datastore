@@ -1,0 +1,19 @@
+# use container
+sudo: false
+
+language: node_js
+
+node_js:
+  - '8'
+
+cache:
+  directories:
+    - '$HOME/google-cloud-sdk'
+
+before_deploy:
+  - gcloud version
+
+deploy:
+  - provider: script
+    script:
+      gcloud beta functions deploy set --stage-bucket test-tridnguyen-com --trigger-http
