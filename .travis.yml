@@ -1,35 +1,33 @@
-# use container
 sudo: false
-
 language: node_js
-
 node_js:
-  - '8'
-
+- '8'
 cache:
   directories:
-    - '$HOME/google-cloud-sdk'
-
+  - "$HOME/google-cloud-sdk"
 before_deploy:
-  # these steps are copied from 
-  # https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci/
+# these steps are copied from 
+# https://www.drzon.net/posts/automatic-deployments-to-google-cloud-functions-with-travis-ci/
 
-  # disable prompt when installing SDK
-  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
-  # add gcloud to PATH
-  - source /home/travis/google-cloud-sdk/path.bash.inc
-  - gcloud version
+# disable prompt when installing SDK
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+# add gcloud to PATH
+- source /home/travis/google-cloud-sdk/path.bash.inc
+- gcloud version
 
-  # is this needed?
-  # - gcloud --quiet components update
+# is this needed?
+# - gcloud --quiet components update
 
-  - openssl aes-256-cbc -K $encrypted_762e83343500_key -iv $encrypted_762e83343500_iv -in credentials/test-tridnguyen-com-2bb2099dfede.json.enc -out credentials/test-tridnguyen-com-2bb2099dfede.json -d
-  - gcloud auth activate-service-account --key-file credentials/test-tridnguyen-com-2bb2099dfede.json
-  - gcloud config set project test-tridnguyen-com
+- openssl aes-256-cbc -K $encrypted_762e83343500_key -iv $encrypted_762e83343500_iv -in credentials/test-tridnguyen-com-2bb2099dfede.json.enc -out credentials/test-tridnguyen-com-2bb2099dfede.json -d
+- gcloud auth activate-service-account --key-file credentials/test-tridnguyen-com-2bb2099dfede.json
+- gcloud config set project test-tridnguyen-com
 
 deploy:
-  - provider: script
-    script: bash bin/deploy.sh
-    skip_cleanup: true
-    on:
-      branch: master
+- provider: script
+  script: bash bin/deploy.sh
+  skip_cleanup: true
+  on:
+    branch: master
+notifications:
+  slack:
+    secure: 1zFcKxsJiXGjW/gSX68eZ5rS0CRC887JpVvcxPo2ZUeJWleV1fSOw1DpFPxPBQKcfgMLeKnM95EZKiJDTWOigi4W4MB+XJcxWBr/XoAHsX/sjDgzxxNu9TPurwhiWsTlbcX7xcaA7DmoTXe95YCbjFScEmj+Fdxld6FW4lk63crZnL7NKoMHrPGF6x2fhg5wK7lSMBCvlukqDExwYVKAVql6rKR0JH9G3aDGioQV4ycAe/UmJncFaGr/we6bRKFd6EJWV4IfOqF4Jv+ounLztXC3r2JK1gcSrNpow5IFQOha1KWBYJw23yVKo5OXL8kLWs/zfDR+itWZCJDSEFSVNkqL28eLA7549dPYW9GoyLDDLLmssxiq2YrdvAdSaJjzzV2PhdclZdDEhaiY57BoC+zyz3h+bmvDlnJMKIENet9HbEkKV/rBFPFp+r6IkCcyz7ckDTUKdIjEUe2Nzvn500uHsXARRCNioRtOP/H43jNPUcdoPJbBcRp8pZZcAUgbeZOs38te2KLUkRA1rM1HVBaH0ekkwr3UuPaOi5OSXt1erXnpmiZFiaOFutMCpVx9n9O/wOil0n8QtpqJS3NsWsJNDEVYDVry+Z+7J9UbCN9ES5jeonqgt/4aF+Dj/RAp/hYRNc+xmyMm18VQU+fJvxf3RvqQiMYC7dqJTmPo17M=
