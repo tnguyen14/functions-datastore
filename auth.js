@@ -32,7 +32,6 @@ function verifyToken(token, cb) {
         cb(err);
         return
       }
-      console.log(decoded);
       cb(null, decoded);
     });
   });
@@ -40,29 +39,31 @@ function verifyToken(token, cb) {
 
 function checkAuth (fn) {
   return function (req, res) {
-	if (!req.headers || !req.headers.authorization) {
-	  res.status(401).send('No authorization token found.');
-	  return;
-	}
-	const parts = req.headers.authorization.split(' ');
-	if (parts.length != 2) {
-	  res.status(401).send('Bad credential format.');
-	  return;
-	}
-	const scheme = parts[0];
-	const credentials = parts[1];
+    if (!req.headers || !req.headers.authorization) {
+      res.status(401).send('No authorization token found.');
+      return Promise.reject('No authorization token found.');
+    }
+    const parts = req.headers.authorization.split(' ');
+    if (parts.length != 2) {
+      res.status(401).send('Bad credential format.');
+      return Promise.reject('Bad credential format.');
+    }
+    const scheme = parts[0];
+    const credentials = parts[1];
 
-	if (!/^Bearer$/i.test(scheme)) {
-	  res.status(401).send('Bad credential format.');
-	  return;
-	}
-	verifyToken(credentials, function (err) {
-	  if (err) {
-		res.status(401).send('Invalid token');
-		return;
-	  }
-	  fn(req, res);
-	});
+    if (!/^Bearer$/i.test(scheme)) {
+      res.status(401).send('Bad credential format.');
+      return Promise.reject('Bad credential format.');
+    }
+    return new Promise((resolve, reject) => {
+      verifyToken(credentials, function (err) {
+        if (err) {
+          res.status(401).send('Invalid token');
+          return reject('Invalid token.');
+        }
+        resolve(fn(req, res));
+      });
+    });
   };
 }
 
