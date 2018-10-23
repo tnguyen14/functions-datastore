@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-'use strict';
-
 const checkAuth = require('./auth');
 const Datastore = require('@google-cloud/datastore');
 
