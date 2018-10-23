@@ -29,10 +29,7 @@ before_deploy:
 
 deploy:
   - provider: script
-    script:
-      - gcloud beta functions deploy get --stage-bucket test-tridnguyen-com --trigger-http
-      - gcloud beta functions deploy set --stage-bucket test-tridnguyen-com --trigger-http
-      - gcloud beta functions deploy del --stage-bucket test-tridnguyen-com --trigger-http
+    script: bash deploy.sh
     skip_cleanup: true
     on:
       branch: master
